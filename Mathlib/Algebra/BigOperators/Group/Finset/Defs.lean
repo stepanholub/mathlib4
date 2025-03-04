@@ -170,7 +170,8 @@ def bigOpBindersProd (processed : Array (Term × Term)) : MacroM Term := do
 These support destructuring, for example `∑ ⟨x, y⟩ ∈ s ×ˢ t, f x y`.
 
 Notation: `"∑" bigOpBinders* ("with" term)? "," term` -/
-syntax (name := bigsum) "∑ " bigOpBinders ("with " term (" : " term)?)? ", " term:67 : term
+syntax (name := bigsum)
+  "∑ " bigOpBinders ("with " atomic(binderIdent " : ")? term)? ", " term:67 : term
 
 /--
 - `∏ x, f x` is notation for `Finset.prod Finset.univ f`. It is the product of `f x`,
@@ -183,35 +184,34 @@ syntax (name := bigsum) "∑ " bigOpBinders ("with " term (" : " term)?)? ", " t
 These support destructuring, for example `∏ ⟨x, y⟩ ∈ s ×ˢ t, f x y`.
 
 Notation: `"∏" bigOpBinders* ("with" term)? "," term` -/
-syntax (name := bigprod) "∏ " bigOpBinders (" with " term (" : " term)?)? ", " term:67 : term
+syntax (name := bigprod)
+  "∏ " bigOpBinders (" with " atomic(binderIdent " : ")? term)? ", " term:67 : term
 
 macro_rules (kind := bigsum)
-  | `(∑ $bs:bigOpBinders $[with $a? $[: $b??]?]?, $v) => do
+  | `(∑ $bs:bigOpBinders $[with $[$hx??:binderIdent :]? $p?:term]?, $v) => do
     let processed ← processBigOpBinders bs
     let x ← bigOpBindersPattern processed
     let s ← bigOpBindersProd processed
     -- `a` is interpreted as the filtering proposition, unless `b` exists, in which case `a` is the
     -- proof and `b` is the filtering proposition
-    match a?, b?? with
-    | some hp, some (some p) =>
-      `(Finset.sum (α := (Finset.filter (fun $x ↦ $p) $s)) Finset.univ fun ⟨$x, hx⟩ ↦
-        have ⟨_, $hp⟩ := Finset.mem_filter.1 hx; $v)
-    | some p, _ => `(Finset.sum (Finset.filter (fun $x ↦ $p) $s) (fun $x ↦ $v))
-    | none, _ => `(Finset.sum $s (fun $x ↦ $v))
+    match hx??, p? with
+    | some (some hx), some p =>
+      `(Finset.sum $s fun $x ↦ if $hx : $p then $v else 0)
+    | _, some p => `(Finset.sum (Finset.filter (fun $x ↦ $p) $s) (fun $x ↦ $v))
+    | _, none => `(Finset.sum $s (fun $x ↦ $v))
 
 macro_rules (kind := bigprod)
-  | `(∏ $bs:bigOpBinders $[with $a? $[: $b??]?]?, $v) => do
+  | `(∏ $bs:bigOpBinders $[with $[$hx??:binderIdent :]? $p?:term]?, $v) => do
     let processed ← processBigOpBinders bs
     let x ← bigOpBindersPattern processed
     let s ← bigOpBindersProd processed
     -- `a` is interpreted as the filtering proposition, unless `b` exists, in which case `a` is the
     -- proof and `b` is the filtering proposition
-    match a?, b?? with
-    | some hp, some (some p) =>
-      `(Finset.prod (α := (Finset.filter (fun $x ↦ $p) $s)) Finset.univ fun ⟨$x, hx⟩ ↦
-        have ⟨_, $hp⟩ := Finset.mem_filter.1 hx; $v)
-    | some p, _ => `(Finset.prod (Finset.filter (fun $x ↦ $p) $s) (fun $x ↦ $v))
-    | none, _ => `(Finset.prod $s (fun $x ↦ $v))
+    match hx??, p? with
+    | some (some hx), some p =>
+      `(Finset.prod $s fun $x ↦ if $hx : $p then $v else 1)
+    | _, some p => `(Finset.prod (Finset.filter (fun $x ↦ $p) $s) (fun $x ↦ $v))
+    | _, none => `(Finset.prod $s (fun $x ↦ $v))
 
 section deprecated -- since 2024-30-01
 open Elab Term Tactic TryThis

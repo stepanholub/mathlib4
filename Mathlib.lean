@@ -300,6 +300,7 @@ import Mathlib.Algebra.GeomSum
 import Mathlib.Algebra.GradedMonoid
 import Mathlib.Algebra.GradedMulAction
 import Mathlib.Algebra.Group.Action.Basic
+import Mathlib.Algebra.Group.Action.BigOperators
 import Mathlib.Algebra.Group.Action.Defs
 import Mathlib.Algebra.Group.Action.End
 import Mathlib.Algebra.Group.Action.Equidecomp

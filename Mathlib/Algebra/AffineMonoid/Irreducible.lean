@@ -74,8 +74,7 @@ lemma Submonoid.closure_irreducible : Submonoid.closure {p : M | Irreducible p} 
   obtain rfl | hr₀ := eq_or_ne r 1
   · simpa using hSmax (y := S \ {1}) (by simpa) Finset.sdiff_subset hrS
   -- Else find `a`, `b` non-units such that `a * b = r`.
-  simp only [irreducible_iff, Set.mem_setOf_eq, not_and, not_forall, Classical.not_imp,
-    not_or] at hrirred
+  simp only [irreducible_iff, Set.mem_setOf_eq, not_and, not_forall, not_or] at hrirred
   obtain ⟨a, b, hr, ha, hb⟩ := hrirred <| by simpa
   -- Write `a = ∏ s ∈ S, s ^ m s`, `b = ∏ s ∈ S, s ^ n s` for some coefficients `m`, `n`.
   obtain ⟨m, -, hm⟩ := Submonoid.mem_closure_finset (x := a).mp (by rw [hSgen]; trivial)
@@ -120,6 +119,6 @@ lemma Submonoid.closure_irreducible : Submonoid.closure {p : M | Irreducible p} 
       simp at hb
   -- If that power is at least `2`, then we can write `1` as `r` times something.
   -- Since `M` is salient, this means that `r = 1`. Contradiction.
-  | N + 2 => simp [eq_comm (a := (1 : M)), hr, hr₀, pow_add, mul_assoc, mul_left_comm] at hr'
+  | N + 2 => simp [hr, hr₀, pow_add, mul_assoc, mul_left_comm] at hr'
 
 end CancelCommMonoid

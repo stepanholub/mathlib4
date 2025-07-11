@@ -30,7 +30,7 @@ variable [CommSemiring R] [Semiring A] [HopfAlgebra R A] {a b : A}
 variable (R) in
 /-- Turn a group-like element `a` into a unit with inverse its antipode. -/
 @[simps]
-def groupLikeToUnits : GroupLike R A →* Aˣ where
+def GroupLike.toUnits : GroupLike R A →* Aˣ where
   toFun a := {
     val := a
     inv := antipode R a
@@ -41,7 +41,7 @@ def groupLikeToUnits : GroupLike R A →* Aˣ where
   map_mul' a b := by ext; rfl
 
 lemma IsGroupLikeElem.isUnit (ha : IsGroupLikeElem R a) : IsUnit a :=
-  (groupLikeToUnits R ⟨a, ha⟩).isUnit
+  (GroupLike.toUnits R ⟨a, ha⟩).isUnit
 
 @[simp] protected lemma IsGroupLikeElem.antipode (ha : IsGroupLikeElem R a) :
     IsGroupLikeElem R (antipode R a) :=

@@ -70,9 +70,13 @@ theorem isStalkInj_isGerm (x : X) : IsStalkInj (isGerm F).pred x := by
   exact (congr_fun (F.germ_res iU w w.2) gU).symm.trans (congr_arg (F.germ W w w.2) e)
     |>.trans (congr_fun (F.germ_res iV w w.2) gV)
 
+end Sheafify
+
+attribute [local instance] Types.instFunLike Types.instConcreteCategory in
 /-- The adjunction between presheaves and prelocal predicates. -/
-def adjunction (F : Presheaf (Type u) X) {G : X → Type u} (P : PrelocalPredicate G) :
-    {f : Π x, F.stalk x → G x // (isGerm F).pred ≤ (P.pullback f).pred} ≃
+def adjunctionPrelocalPredicate (F : Presheaf (Type u) X) {G : X → Type u}
+    (P : PrelocalPredicate G) :
+    {f : Π x, F.stalk x → G x // (Sheafify.isGerm F).pred ≤ (P.pullback f).pred} ≃
     (F ⟶ subpresheafToTypes P) where
   toFun f := ⟨fun U s ↦ ⟨fun x ↦ f.1 _ (F.germ _ _ x.2 s), f.2 _ _ ⟨_, fun _ ↦ rfl⟩⟩,
     fun U V i ↦ funext fun s ↦ Subtype.ext <| funext fun x ↦ congr_arg _ (F.germ_res_apply ..)⟩
@@ -86,8 +90,6 @@ def adjunction (F : Presheaf (Type u) X) {G : X → Type u} (P : PrelocalPredica
     exact (congr_arg _ (stalkFunctor_map_germ_apply (C := Type u) ..)).trans (stalkToFiber_germ ..)
   right_inv f := ext fun U ↦ funext fun s ↦ Subtype.ext <| funext fun x ↦
     (congr_arg _ (stalkFunctor_map_germ_apply (C := Type u) ..)).trans (stalkToFiber_germ ..)
-
-end Sheafify
 
 /-- The sheafification of a `Type` valued presheaf, defined as the functions into the stalks which
 are locally equal to germs.

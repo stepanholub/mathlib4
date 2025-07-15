@@ -190,7 +190,7 @@ abbrev IsSeparated :=
 extended to a section on `U` in exactly one way.
 This corresponds to the `IsEvenlyCovered` condition in the associated étale space. -/
 abbrev IsConstantOn (U : Opens B) : Prop :=
-  ∀ (b : U) (x : F b), ∃! s : Π b : U, F b, P s ∧ s b = x
+  ∀ (b₀ : U) (x : F b₀), ∃! s : Π b : U, F b, P s ∧ s b₀ = x
 
 /-- A trivialization indexed by `ι` of a set of sections on a set `U` is a subset of sections
 indexed by `ι` which induces, for each point of `U`, a bijection between `ι` and the germs

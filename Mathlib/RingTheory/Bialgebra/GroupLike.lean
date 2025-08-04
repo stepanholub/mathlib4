@@ -9,7 +9,7 @@ import Mathlib.RingTheory.Coalgebra.GroupLike
 /-!
 # Group-like elements in a bialgebra
 
-This file prove that group-like elements in a bialgebra form a monoid.
+This file proves that group-like elements in a bialgebra form a monoid.
 -/
 
 open Coalgebra Bialgebra

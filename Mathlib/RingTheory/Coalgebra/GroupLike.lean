@@ -9,7 +9,7 @@ import Mathlib.RingTheory.Flat.Domain
 /-!
 # Group-like elements in a coalgebra
 
-This file defines group-like elements in a coalgebra, ie elements `a` such that `η a = 1` and
+This file defines group-like elements in a coalgebra, i.e. elements `a` such that `ε a = 1` and
 `Δ a = a ⊗ₜ a`.
 
 ## Main declarations
@@ -27,7 +27,7 @@ variable [CommSemiring R] [AddCommMonoid A] [AddCommMonoid B] [Module R A] [Coal
   [Module R B] [Coalgebra R B] {a b : A}
 
 variable (R) in
-/-- A group-like element in a coalgebra is an element `a` such that $\eta(a) = 1$ and
+/-- A group-like element in a coalgebra is an element `a` such that $\varepsilon(a) = 1$ and
 $\Delta(a) = a ⊗ a$. -/
 @[mk_iff]
 structure IsGroupLikeElem (a : A) where
@@ -42,13 +42,13 @@ attribute [simp] IsGroupLikeElem.counit_eq_one IsGroupLikeElem.comul_eq_tmul_sel
 lemma IsGroupLikeElem.ne_zero [Nontrivial R] (ha : IsGroupLikeElem R a) : a ≠ 0 := by
   rintro rfl; simpa using ha.counit_eq_one
 
-/-- A coalgebra hom sends group-like elements to group-like elements. -/
+/-- A coalgebra homomorphism sends group-like elements to group-like elements. -/
 lemma IsGroupLikeElem.map [FunLike F A B] [CoalgHomClass F R A B] (f : F)
     (ha : IsGroupLikeElem R a) : IsGroupLikeElem R (f a) where
   counit_eq_one := by rw [CoalgHomClass.counit_comp_apply, ha.counit_eq_one]
   comul_eq_tmul_self := by rw [← CoalgHomClass.map_comp_comul_apply, ha.comul_eq_tmul_self]; simp
 
-/-- A coalgebra equivalence preserves group-like elements. -/
+/-- A coalgebra isomorphism preserves group-like elements. -/
 @[simp] lemma isGroupLikeElem_map [EquivLike F A B] [CoalgEquivClass F R A B] (f : F) :
     IsGroupLikeElem R (f a) ↔ IsGroupLikeElem R a where
   mp ha := by

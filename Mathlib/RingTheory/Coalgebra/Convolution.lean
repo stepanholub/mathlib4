@@ -35,13 +35,9 @@ open Coalgebra TensorProduct
 
 variable {R A B C : Type*} [CommSemiring R]
 
-namespace LinearMap
+open scoped RingTheory.LinearMap
 
-local notation "η" => Algebra.linearMap R A
-local notation "ε" => counit (R := R) (A := C)
-local notation "μ" => mul' R A
-local notation "δ" => comul
-local infix:70 " ⊗ₘ " => TensorProduct.map
+namespace LinearMap
 
 section Semiring
 variable [Semiring A] [Semiring B] [AddCommMonoid C] [Algebra R A] [Algebra R B] [Module R C]

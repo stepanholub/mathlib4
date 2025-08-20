@@ -21,6 +21,12 @@ f * g = f g
          |
 ```
 diagrammatically, where `μ` stands for multiplication and `δ` for comultiplication.
+
+## Implementation notes
+
+Note that in the case `C = A` this convolution product conflicts with the (unfortunately global!)
+group instance on `Module.End R A` with multiplication defined as composition.
+As a result, the convolution product is scoped to `ConvolutionProduct`.
 -/
 
 suppress_compilation
@@ -36,7 +42,6 @@ local notation "ε" => counit (R := R) (A := C)
 local notation "μ" => mul' R A
 local notation "δ" => comul
 local infix:70 " ⊗ₘ " => TensorProduct.map
--- local notation "α" => TensorProduct.assoc _ _ _
 
 section Semiring
 variable [Semiring A] [Semiring B] [AddCommMonoid C] [Algebra R A] [Algebra R B] [Module R C]

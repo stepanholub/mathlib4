@@ -39,8 +39,8 @@ class CoalgebraStruct (R : Type u) (A : Type v)
   /-- The counit of the coalgebra -/
   counit : A →ₗ[R] R
 
-@[inherit_doc] scoped [RingTheory.LinearMap] notation "ε" => counit
-@[inherit_doc] scoped [RingTheory.LinearMap] notation "δ" => comul
+@[inherit_doc] scoped [RingTheory.LinearMap] notation "ε" => CoalgebraStruct.counit
+@[inherit_doc] scoped [RingTheory.LinearMap] notation "δ" => CoalgebraStruct.comul
 
 /--
 A representation of an element `a` of a coalgebra `A` is a finite sum of pure tensors `∑ xᵢ ⊗ yᵢ`
